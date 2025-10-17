@@ -3,7 +3,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
   <title>Ingreso a JamuWeb</title>
+  
   <style>
     :root {
       --bg: #FFF8E1;
@@ -12,6 +14,12 @@
       --accent: #FFB300;
       --shadow-light: 10px 10px 20px #d6c26b, -10px -10px 20px #fffdd2;
     }
+   
+.logo {
+  width: 120px;
+  margin-bottom: 20px;
+  filter: drop-shadow(4px 4px 6px rgba(0,0,0,0.15));
+}
 
     body {
       font-family: 'Poppins', sans-serif;
@@ -79,10 +87,14 @@
       cursor: pointer;
       font-weight: 600;
     }
+    
   </style>
 </head>
 <body>
   <div class="login-box">
+    <!-- 🔸 Logo JamuWeb -->
+    <img src="jamuweb.png" alt="JamuWeb Logo" class="logo">
+
     <h2 id="title">Iniciar Sesión</h2>
     <input type="text" id="username" placeholder="Usuario">
     <input type="password" id="password" placeholder="Contraseña">
@@ -146,4 +158,5 @@
     });
   </script>
 </body>
+
 </html>
