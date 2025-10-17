@@ -12,7 +12,10 @@
       --text: #3E2723;
       --muted: #6D4C41;
       --accent: #FFB300;
+      --error: #D32F2F;
+      --success: #388E3C;
       --shadow-light: 10px 10px 20px #d6c26b, -10px -10px 20px #fffdd2;
+      --shadow-inset: inset 2px 2px 6px rgba(0, 0, 0, 0.1), inset -2px -2px 6px rgba(255, 255, 255, 0.05);
     }
 
     /* 🌙 Modo oscuro elegante */
@@ -22,6 +25,8 @@
       --text: #FBE9E7;
       --muted: #BCAAA4;
       --accent: #FFD54F;
+      --error: #F44336;
+      --success: #4CAF50;
       --shadow-light: 8px 8px 18px #000, -8px -8px 18px #2a2a2a;
     }
 
@@ -50,12 +55,19 @@
       align-items: center;
       justify-content: space-between;
       margin-bottom: 18px;
+      flex-wrap: wrap;
     }
 
     .brand {
       display: flex;
       gap: 12px;
       align-items: center;
+    }
+
+    .logo-container {
+      display: flex;
+      align-items: center;
+      gap: 12px;
     }
 
     .logo {
@@ -71,6 +83,19 @@
       font-size: 18px;
       box-shadow: var(--shadow-light);
       transition: all .3s ease;
+      overflow: hidden;
+    }
+
+    .logo-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      border-radius: 50%;
+    }
+
+    .logo-text {
+      display: flex;
+      flex-direction: column;
     }
 
     h1 {
@@ -103,12 +128,28 @@
       transition: all .3s ease;
     }
 
+    .search:focus, select:focus {
+      box-shadow: var(--shadow-light), 0 0 0 2px var(--accent);
+    }
+
     button.primary {
       background: linear-gradient(135deg, var(--accent), #FFEE58);
       color: #3E2723;
       cursor: pointer;
       font-weight: 600;
       box-shadow: 0 0 10px rgba(255, 215, 64, 0.3);
+    }
+
+    button.secondary {
+      background: var(--card);
+      color: var(--text);
+      cursor: pointer;
+    }
+
+    button.danger {
+      background: linear-gradient(135deg, var(--error), #FF5252);
+      color: white;
+      cursor: pointer;
     }
 
     button.small {
@@ -120,6 +161,16 @@
     button:hover {
       transform: scale(1.03);
       filter: brightness(1.1);
+    }
+
+    button:active {
+      transform: scale(0.98);
+    }
+
+    button:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      transform: none;
     }
 
     main {
@@ -152,6 +203,7 @@
       gap: 12px;
       align-items: flex-start;
       transition: transform .3s, box-shadow .3s;
+      position: relative;
     }
 
     .card:hover {
@@ -170,7 +222,7 @@
       font-weight: 700;
       color: var(--text);
       font-size: 14px;
-      box-shadow: inset 2px 2px 6px rgba(0, 0, 0, 0.2), inset -2px -2px 6px rgba(255, 255, 255, 0.05);
+      box-shadow: var(--shadow-inset);
     }
 
     .info {
@@ -196,19 +248,20 @@
       flex-wrap: wrap;
     }
 
-    .actions a {
+    .actions a, .actions button {
       padding: 8px 10px;
       border-radius: 10px;
       text-decoration: none;
       background: rgba(255, 255, 255, 0.1);
       color: var(--text);
       font-size: 13px;
-      box-shadow: inset 2px 2px 6px rgba(0, 0, 0, 0.1),
-                  inset -2px -2px 6px rgba(255, 255, 255, 0.05);
+      box-shadow: var(--shadow-inset);
       transition: all .3s ease;
+      border: none;
+      cursor: pointer;
     }
 
-    .actions a:hover {
+    .actions a:hover, .actions button:hover {
       transform: scale(1.05);
       background: var(--accent);
       color: #3E2723;
@@ -218,6 +271,14 @@
       background: linear-gradient(90deg, #25D366, #128C7E);
       color: white;
       box-shadow: none;
+    }
+
+    .actions button.edit {
+      background: rgba(33, 150, 243, 0.2);
+    }
+
+    .actions button.delete {
+      background: rgba(244, 67, 54, 0.2);
     }
 
     .aside {
@@ -234,18 +295,51 @@
       gap: 8px;
     }
 
-    input, textarea {
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    input, textarea, select {
       padding: 10px;
       border-radius: 8px;
       border: none;
       background: rgba(255, 255, 255, 0.1);
       color: var(--text);
       transition: background .3s ease;
+      box-shadow: var(--shadow-inset);
+    }
+
+    input:focus, textarea:focus, select:focus {
+      box-shadow: var(--shadow-inset), 0 0 0 2px var(--accent);
+    }
+
+    input.error, textarea.error, select.error {
+      box-shadow: var(--shadow-inset), 0 0 0 2px var(--error);
     }
 
     label {
       font-size: 13px;
       color: var(--muted);
+      font-weight: 500;
+    }
+
+    .error-message {
+      color: var(--error);
+      font-size: 12px;
+      margin-top: 2px;
+      display: none;
+    }
+
+    .success-message {
+      background: var(--success);
+      color: white;
+      padding: 10px;
+      border-radius: 8px;
+      margin-bottom: 15px;
+      text-align: center;
+      display: none;
     }
 
     footer {
@@ -261,6 +355,81 @@
       color: var(--muted);
       border-radius: 12px;
       background: rgba(255, 255, 255, 0.1);
+      grid-column: 1 / -1;
+    }
+
+    .stats {
+      display: flex;
+      gap: 15px;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+    }
+
+    .stat-card {
+      background: var(--card);
+      padding: 15px;
+      border-radius: 12px;
+      box-shadow: var(--shadow-light);
+      text-align: center;
+      flex: 1;
+      min-width: 120px;
+    }
+
+    .stat-number {
+      font-size: 24px;
+      font-weight: 700;
+      color: var(--accent);
+    }
+
+    .stat-label {
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      z-index: 1000;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .modal-content {
+      background: var(--card);
+      padding: 25px;
+      border-radius: 16px;
+      box-shadow: var(--shadow-light);
+      max-width: 500px;
+      width: 90%;
+    }
+
+    .modal-actions {
+      display: flex;
+      gap: 10px;
+      justify-content: flex-end;
+      margin-top: 20px;
+    }
+
+    @media (max-width: 768px) {
+      header {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      
+      .controls {
+        width: 100%;
+        justify-content: space-between;
+      }
+      
+      .search {
+        width: 100%;
+        margin-bottom: 10px;
+      }
     }
   </style>
 </head>
@@ -268,10 +437,15 @@
   <div class="wrap">
     <header>
       <div class="brand">
-        <div class="logo">JW</div>
-        <div>
-          <h1>JamuWeb</h1>
-          <p class="lead">El directorio moderno de negocios en Jamundí</p>
+        <div class="logo-container">
+          <div class="logo">
+            <!-- Aquí va tu logo - reemplaza la URL por la de tu imagen -->
+            <img src="jamuweb.png" alt="JamuWeb Logo" class="logo-img">
+          </div>
+          <div class="logo-text">
+            <h1>JamuWeb</h1>
+            <p class="lead">El directorio moderno de negocios en Jamundí</p>
+          </div>
         </div>
       </div>
       <div class="controls">
@@ -287,14 +461,35 @@
         <select id="neigh">
           <option value="">Todo Jamundí</option>
           <option>Centro</option>
-          <option>Sibaté</option>
-          <option>Las Delicias</option>
-          <option>La Colina</option>
+          <option>ciudad sur</option>
+          <option>alfaguara</option>
+          <option>sachamate</option>
+          <option>potrerito</option>
+          <option>la morada</option>
+          <option>portal de jamundi</option>
+          <option>terranova</option>
+          <option>libertadores</option>
+          <option>la pradera</option>
         </select>
         <button id="toggleTheme" class="small">🌞 / 🌙</button>
         <button id="logoutBtn" class="small">Cerrar sesión</button>
       </div>
     </header>
+
+    <div class="stats">
+      <div class="stat-card">
+        <div class="stat-number" id="totalBusinesses">0</div>
+        <div class="stat-label">Negocios</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number" id="restaurantsCount">0</div>
+        <div class="stat-label">Restaurantes</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-number" id="storesCount">0</div>
+        <div class="stat-label">Tiendas</div>
+      </div>
+    </div>
 
     <main>
       <section>
@@ -303,29 +498,55 @@
       </section>
 
       <aside class="aside">
-        <h3>Agregar negocio</h3>
+        <h3 id="formTitle">Agregar negocio</h3>
+        <div id="successMessage" class="success-message"></div>
         <form id="form" class="row">
-          <label>Nombre</label>
-          <input id="f_name" required />
-          <label>Categoría</label>
-          <select id="f_cat">
-            <option>Restaurante</option>
-            <option>Tienda</option>
-            <option>Servicios</option>
-            <option>Salud</option>
-            <option>Belleza</option>
-          </select>
-          <label>Barrio / Sector</label>
-          <input id="f_neigh" />
-          <label>Teléfono</label>
-          <input id="f_phone" />
-          <label>WhatsApp</label>
-          <input id="f_wh" />
-          <label>Sitio web</label>
-          <input id="f_web" />
-          <label>Descripción</label>
-          <textarea id="f_desc" rows="3"></textarea>
-          <button type="submit" class="primary small">Guardar</button>
+          <div class="form-group">
+            <label for="f_name">Nombre *</label>
+            <input id="f_name" required />
+            <div class="error-message" id="nameError">El nombre es obligatorio</div>
+          </div>
+          
+          <div class="form-group">
+            <label for="f_cat">Categoría *</label>
+            <select id="f_cat" required>
+              <option value="">Selecciona una categoría</option>
+              <option>Restaurante</option>
+              <option>Tienda</option>
+              <option>Servicios</option>
+              <option>Salud</option>
+              <option>Belleza</option>
+            </select>
+            <div class="error-message" id="categoryError">La categoría es obligatoria</div>
+          </div>
+          
+          <div class="form-group">
+            <label for="f_neigh">Barrio / Sector</label>
+            <input id="f_neigh" />
+          </div>
+          
+          <div class="form-group">
+            <label for="f_phone">Teléfono</label>
+            <input id="f_phone" type="tel" />
+          </div>
+          
+          <div class="form-group">
+            <label for="f_wh">WhatsApp</label>
+            <input id="f_wh" type="tel" />
+          </div>
+          
+          <div class="form-group">
+            <label for="f_web">Sitio web</label>
+            <input id="f_web" type="url" />
+          </div>
+          
+          <div class="form-group">
+            <label for="f_desc">Descripción</label>
+            <textarea id="f_desc" rows="3"></textarea>
+          </div>
+          
+          <button type="submit" class="primary small" id="submitBtn">Guardar</button>
+          <button type="button" class="secondary small" id="cancelBtn" style="display:none">Cancelar</button>
         </form>
       </aside>
     </main>
@@ -333,12 +554,24 @@
     <footer>© 2025 JamuWeb — Conectamos Jamundí con su gente 💛</footer>
   </div>
 
+  <!-- Modal de confirmación para eliminar -->
+  <div id="deleteModal" class="modal">
+    <div class="modal-content">
+      <h3>Confirmar eliminación</h3>
+      <p>¿Estás seguro de que quieres eliminar este negocio? Esta acción no se puede deshacer.</p>
+      <div class="modal-actions">
+        <button id="confirmDelete" class="danger small">Eliminar</button>
+        <button id="cancelDelete" class="secondary small">Cancelar</button>
+      </div>
+    </div>
+  </div>
+
   <script>
     // ✅ Verificación de sesión
     const user = localStorage.getItem("user");
     if (!user) {
       alert("Debes iniciar sesión para acceder a JamuWeb.");
-      window.location.href = "index.html";
+      window.location.href = "login.html";
     }
 
     // ✅ Cerrar sesión
@@ -346,81 +579,296 @@
       localStorage.removeItem("user");
       localStorage.removeItem("pass");
       alert("Sesión cerrada correctamente 💛");
-      window.location.href = "index.html";
+      window.location.href = "login.html";
     });
 
     // ✅ Datos iniciales
     const SAMPLE = [
-      {id:1,name:'Panadería La 20',cat:'Tienda',neigh:'Centro',phone:'+57 312 123 4567',wh:'573121234567',web:'',desc:'Panadería tradicional — abre desde las 5am',created:Date.now()}
+      {
+        id: 1,
+        name: 'Panadería La 20',
+        cat: 'Tienda',
+        neigh: 'Centro',
+        phone: '+57 312 123 4567',
+        wh: '573121234567',
+        web: '',
+        desc: 'Panadería tradicional — abre desde las 5am',
+        created: Date.now()
+      }
     ];
+
+    // Variables globales
     const $ = id => document.getElementById(id);
-    let data = JSON.parse(localStorage.getItem('jamuweb')||'null') || SAMPLE.slice();
+    let data = JSON.parse(localStorage.getItem('jamuweb') || 'null') || SAMPLE.slice();
+    let editingId = null;
+    let businessToDelete = null;
+
+    // Guardar datos en localStorage
     const save = () => localStorage.setItem('jamuweb', JSON.stringify(data));
 
+    // ✅ Actualizar estadísticas
+    function updateStats() {
+      const total = data.length;
+      const restaurants = data.filter(b => b.cat === 'Restaurante').length;
+      const stores = data.filter(b => b.cat === 'Tienda').length;
+      
+      $('totalBusinesses').textContent = total;
+      $('restaurantsCount').textContent = restaurants;
+      $('storesCount').textContent = stores;
+    }
+
+    // ✅ Validar formulario
+    function validateForm() {
+      let isValid = true;
+      
+      // Ocultar todos los mensajes de error
+      document.querySelectorAll('.error-message').forEach(el => {
+        el.style.display = 'none';
+      });
+      
+      document.querySelectorAll('input, select').forEach(el => {
+        el.classList.remove('error');
+      });
+      
+      // Validar nombre
+      if (!$('f_name').value.trim()) {
+        $('nameError').style.display = 'block';
+        $('f_name').classList.add('error');
+        isValid = false;
+      }
+      
+      // Validar categoría
+      if (!$('f_cat').value) {
+        $('categoryError').style.display = 'block';
+        $('f_cat').classList.add('error');
+        isValid = false;
+      }
+      
+      return isValid;
+    }
+
+    // ✅ Mostrar mensaje de éxito
+    function showSuccess(message) {
+      const successEl = $('successMessage');
+      successEl.textContent = message;
+      successEl.style.display = 'block';
+      
+      setTimeout(() => {
+        successEl.style.display = 'none';
+      }, 3000);
+    }
+
     // ✅ Render de negocios
-    function render(){
-      const q=$('q').value.toLowerCase();
-      const c=$('cat').value;
-      const n=$('neigh').value;
-      const cont=$('results');
-      cont.innerHTML='';
-      const f=data.filter(i=>{
-        if(c&&i.cat!==c)return false;
-        if(n&&i.neigh!==n)return false;
-        if(q&&!i.name.toLowerCase().includes(q))return false;
+    function render() {
+      const q = $('q').value.toLowerCase();
+      const c = $('cat').value;
+      const n = $('neigh').value;
+      const cont = $('results');
+      cont.innerHTML = '';
+      
+      const filtered = data.filter(item => {
+        if (c && item.cat !== c) return false;
+        if (n && item.neigh !== n) return false;
+        if (q && !item.name.toLowerCase().includes(q) && 
+            !(item.desc && item.desc.toLowerCase().includes(q))) return false;
         return true;
       });
-      $('empty').style.display=f.length?'none':'block';
-      f.forEach(it=>{
-        const el=document.createElement('div');
-        el.className='card';
-        el.innerHTML=`
-          <div class='thumb'>${it.name.split(' ').map(s=>s[0]).join('').slice(0,2)}</div>
+      
+      $('empty').style.display = filtered.length ? 'none' : 'block';
+      
+      filtered.forEach(item => {
+        const el = document.createElement('div');
+        el.className = 'card';
+        
+        // Generar iniciales para el thumbnail
+        const initials = item.name.split(' ')
+          .map(word => word[0])
+          .join('')
+          .slice(0, 2)
+          .toUpperCase();
+        
+        el.innerHTML = `
+          <div class='thumb'>${initials}</div>
           <div class='info'>
-            <h4 class='name'>${it.name}</h4>
-            <div class='meta'>${it.cat} • ${it.neigh}</div>
-            <div>${it.desc||''}</div>
+            <h4 class='name'>${item.name}</h4>
+            <div class='meta'>${item.cat} • ${item.neigh || 'Sin ubicación'}</div>
+            <div>${item.desc || ''}</div>
             <div class='actions'>
-              <a href='tel:${it.phone}'>Llamar</a>
-              <a class='wh' href='https://wa.me/${it.wh}' target='_blank'>WhatsApp</a>
+              ${item.phone ? `<a href='tel:${item.phone}'>Llamar</a>` : ''}
+              ${item.wh ? `<a class='wh' href='https://wa.me/${item.wh}' target='_blank'>WhatsApp</a>` : ''}
+              <button class='edit' data-id='${item.id}'>Editar</button>
+              <button class='delete' data-id='${item.id}'>Eliminar</button>
             </div>
           </div>`;
+        
         cont.appendChild(el);
+      });
+      
+      // Agregar event listeners para los botones de editar y eliminar
+      document.querySelectorAll('.edit').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          const id = parseInt(e.target.getAttribute('data-id'));
+          editBusiness(id);
+        });
+      });
+      
+      document.querySelectorAll('.delete').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          const id = parseInt(e.target.getAttribute('data-id'));
+          confirmDelete(id);
+        });
+      });
+      
+      updateStats();
+    }
+
+    // ✅ Editar negocio
+    function editBusiness(id) {
+      const business = data.find(item => item.id === id);
+      if (!business) return;
+      
+      editingId = id;
+      $('formTitle').textContent = 'Editar negocio';
+      $('f_name').value = business.name;
+      $('f_cat').value = business.cat;
+      $('f_neigh').value = business.neigh || '';
+      $('f_phone').value = business.phone || '';
+      $('f_wh').value = business.wh || '';
+      $('f_web').value = business.web || '';
+      $('f_desc').value = business.desc || '';
+      $('cancelBtn').style.display = 'block';
+      $('submitBtn').textContent = 'Actualizar';
+      
+      // Desplazar hacia el formulario
+      $('form').scrollIntoView({ behavior: 'smooth' });
+    }
+
+    // ✅ Cancelar edición
+    function cancelEdit() {
+      editingId = null;
+      $('formTitle').textContent = 'Agregar negocio';
+      $('form').reset();
+      $('cancelBtn').style.display = 'none';
+      $('submitBtn').textContent = 'Guardar';
+      
+      // Limpiar errores
+      document.querySelectorAll('.error-message').forEach(el => {
+        el.style.display = 'none';
+      });
+      
+      document.querySelectorAll('input, select').forEach(el => {
+        el.classList.remove('error');
       });
     }
 
-    render();
-    ['q','cat','neigh'].forEach(id=>$(id).addEventListener('input',render));
+    // ✅ Confirmar eliminación
+    function confirmDelete(id) {
+      businessToDelete = id;
+      $('deleteModal').style.display = 'flex';
+    }
 
-    $('form').addEventListener('submit',e=>{
-      e.preventDefault();
-      const o={
-        id:Date.now(),
-        name:$('f_name').value,
-        cat:$('f_cat').value,
-        neigh:$('f_neigh').value,
-        phone:$('f_phone').value,
-        wh:$('f_wh').value,
-        web:$('f_web').value,
-        desc:$('f_desc').value
-      };
-      data.push(o);
+    // ✅ Eliminar negocio
+    function deleteBusiness() {
+      if (!businessToDelete) return;
+      
+      data = data.filter(item => item.id !== businessToDelete);
       save();
       render();
-      e.target.reset();
-    });
+      showSuccess('Negocio eliminado correctamente');
+      
+      // Cerrar modal
+      $('deleteModal').style.display = 'none';
+      businessToDelete = null;
+    }
+
+    // ✅ Inicializar la aplicación
+    function init() {
+      // Renderizar negocios iniciales
+      render();
+      
+      // Event listeners para filtros
+      ['q', 'cat', 'neigh'].forEach(id => {
+        $(id).addEventListener('input', render);
+      });
+      
+      // Event listener para el formulario
+      $('form').addEventListener('submit', e => {
+        e.preventDefault();
+        
+        if (!validateForm()) {
+          return;
+        }
+        
+        const businessData = {
+          id: editingId || Date.now(),
+          name: $('f_name').value.trim(),
+          cat: $('f_cat').value,
+          neigh: $('f_neigh').value.trim(),
+          phone: $('f_phone').value.trim(),
+          wh: $('f_wh').value.trim(),
+          web: $('f_web').value.trim(),
+          desc: $('f_desc').value.trim()
+        };
+        
+        if (editingId) {
+          // Actualizar negocio existente
+          const index = data.findIndex(item => item.id === editingId);
+          if (index !== -1) {
+            data[index] = businessData;
+            showSuccess('Negocio actualizado correctamente');
+          }
+        } else {
+          // Agregar nuevo negocio
+          data.push(businessData);
+          showSuccess('Negocio agregado correctamente');
+        }
+        
+        save();
+        render();
+        cancelEdit();
+      });
+      
+      // Event listener para cancelar edición
+      $('cancelBtn').addEventListener('click', cancelEdit);
+      
+      // Event listeners para el modal de eliminación
+      $('confirmDelete').addEventListener('click', deleteBusiness);
+      $('cancelDelete').addEventListener('click', () => {
+        $('deleteModal').style.display = 'none';
+        businessToDelete = null;
+      });
+      
+      // Cerrar modal al hacer clic fuera
+      $('deleteModal').addEventListener('click', (e) => {
+        if (e.target === $('deleteModal')) {
+          $('deleteModal').style.display = 'none';
+          businessToDelete = null;
+        }
+      });
+    }
 
     // ✅ Modo oscuro / claro persistente
     const themeBtn = $('toggleTheme');
-    themeBtn.addEventListener('click',()=>{
-      const b=document.body;
-      const cur=b.getAttribute('data-theme');
-      const next = cur==='light'?'dark':'light';
-      b.setAttribute('data-theme',next);
+    themeBtn.addEventListener('click', () => {
+      const body = document.body;
+      const current = body.getAttribute('data-theme');
+      const next = current === 'light' ? 'dark' : 'light';
+      body.setAttribute('data-theme', next);
       localStorage.setItem('theme', next);
+      
+      // Actualizar texto del botón
+      themeBtn.textContent = next === 'light' ? '🌞 / 🌙' : '🌙 / 🌞';
     });
+    
+    // Cargar tema guardado
     const savedTheme = localStorage.getItem('theme');
-    if (savedTheme) document.body.setAttribute('data-theme', savedTheme);
+    if (savedTheme) {
+      document.body.setAttribute('data-theme', savedTheme);
+      themeBtn.textContent = savedTheme === 'light' ? '🌞 / 🌙' : '🌙 / 🌞';
+    }
+
+    // Inicializar la aplicación
+    init();
   </script>
 </body>
 </html>
