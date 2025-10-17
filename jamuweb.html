@@ -1,0 +1,426 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>JamuWeb - Directorio de Negocios en Jamundí</title>
+  <meta name="description" content="Directorio de negocios locales en Jamundí con estilo neomórfico y modo claro/oscuro elegante." />
+  <style>
+    :root {
+      --bg: #FFF8E1;
+      --card: #FFF3B0;
+      --text: #3E2723;
+      --muted: #6D4C41;
+      --accent: #FFB300;
+      --shadow-light: 10px 10px 20px #d6c26b, -10px -10px 20px #fffdd2;
+    }
+
+    /* 🌙 Modo oscuro elegante */
+    [data-theme="dark"] {
+      --bg: #0F0F0F;
+      --card: #1B1B1B;
+      --text: #FBE9E7;
+      --muted: #BCAAA4;
+      --accent: #FFD54F;
+      --shadow-light: 8px 8px 18px #000, -8px -8px 18px #2a2a2a;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html, body {
+      height: 100%;
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      transition: all .4s ease-in-out;
+    }
+
+    .wrap {
+      max-width: 1100px;
+      margin: 28px auto;
+      padding: 22px;
+    }
+
+    header {
+      display: flex;
+      gap: 16px;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 18px;
+    }
+
+    .brand {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+    }
+
+    .logo {
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--accent), #FFEE58);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: 800;
+      font-size: 18px;
+      box-shadow: var(--shadow-light);
+      transition: all .3s ease;
+    }
+
+    h1 {
+      margin: 0;
+      font-size: 22px;
+      color: var(--text);
+    }
+
+    p.lead {
+      margin: 0;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .controls {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .search, select, button {
+      padding: 10px 14px;
+      border-radius: 12px;
+      border: none;
+      outline: none;
+      background: var(--card);
+      color: var(--text);
+      box-shadow: var(--shadow-light);
+      transition: all .3s ease;
+    }
+
+    button.primary {
+      background: linear-gradient(135deg, var(--accent), #FFEE58);
+      color: #3E2723;
+      cursor: pointer;
+      font-weight: 600;
+      box-shadow: 0 0 10px rgba(255, 215, 64, 0.3);
+    }
+
+    button.small {
+      font-size: 13px;
+      padding: 8px 10px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      transform: scale(1.03);
+      filter: brightness(1.1);
+    }
+
+    main {
+      display: grid;
+      grid-template-columns: 1fr 340px;
+      gap: 18px;
+    }
+
+    @media(max-width:900px) {
+      main {
+        grid-template-columns: 1fr;
+      }
+      .aside {
+        order: 2;
+      }
+    }
+
+    .list {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 14px;
+    }
+
+    .card {
+      background: var(--card);
+      padding: 16px;
+      border-radius: 16px;
+      box-shadow: var(--shadow-light);
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+      transition: transform .3s, box-shadow .3s;
+    }
+
+    .card:hover {
+      transform: scale(1.03);
+      box-shadow: 0 0 18px rgba(255, 215, 64, 0.25);
+    }
+
+    .thumb {
+      width: 84px;
+      height: 84px;
+      border-radius: 10px;
+      background: rgba(255, 255, 255, 0.1);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      color: var(--text);
+      font-size: 14px;
+      box-shadow: inset 2px 2px 6px rgba(0, 0, 0, 0.2), inset -2px -2px 6px rgba(255, 255, 255, 0.05);
+    }
+
+    .info {
+      flex: 1;
+    }
+
+    .name {
+      font-weight: 700;
+      margin: 0;
+      font-size: 16px;
+    }
+
+    .meta {
+      font-size: 13px;
+      color: var(--muted);
+      margin: 6px 0;
+    }
+
+    .actions {
+      display: flex;
+      gap: 8px;
+      margin-top: 10px;
+      flex-wrap: wrap;
+    }
+
+    .actions a {
+      padding: 8px 10px;
+      border-radius: 10px;
+      text-decoration: none;
+      background: rgba(255, 255, 255, 0.1);
+      color: var(--text);
+      font-size: 13px;
+      box-shadow: inset 2px 2px 6px rgba(0, 0, 0, 0.1),
+                  inset -2px -2px 6px rgba(255, 255, 255, 0.05);
+      transition: all .3s ease;
+    }
+
+    .actions a:hover {
+      transform: scale(1.05);
+      background: var(--accent);
+      color: #3E2723;
+    }
+
+    .actions a.wh {
+      background: linear-gradient(90deg, #25D366, #128C7E);
+      color: white;
+      box-shadow: none;
+    }
+
+    .aside {
+      background: var(--card);
+      padding: 16px;
+      border-radius: 16px;
+      box-shadow: var(--shadow-light);
+      transition: all .3s ease;
+    }
+
+    form.row {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    input, textarea {
+      padding: 10px;
+      border-radius: 8px;
+      border: none;
+      background: rgba(255, 255, 255, 0.1);
+      color: var(--text);
+      transition: background .3s ease;
+    }
+
+    label {
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    footer {
+      margin-top: 18px;
+      color: var(--muted);
+      font-size: 13px;
+      text-align: center;
+    }
+
+    .empty {
+      padding: 28px;
+      text-align: center;
+      color: var(--muted);
+      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.1);
+    }
+  </style>
+</head>
+<body data-theme="light">
+  <div class="wrap">
+    <header>
+      <div class="brand">
+        <div class="logo">JW</div>
+        <div>
+          <h1>JamuWeb</h1>
+          <p class="lead">El directorio moderno de negocios en Jamundí</p>
+        </div>
+      </div>
+      <div class="controls">
+        <input id="q" class="search" placeholder="Buscar negocio o palabra clave..." />
+        <select id="cat">
+          <option value="">Todas las categorías</option>
+          <option>Restaurante</option>
+          <option>Tienda</option>
+          <option>Servicios</option>
+          <option>Salud</option>
+          <option>Belleza</option>
+        </select>
+        <select id="neigh">
+          <option value="">Todo Jamundí</option>
+          <option>Centro</option>
+          <option>Sibaté</option>
+          <option>Las Delicias</option>
+          <option>La Colina</option>
+        </select>
+        <button id="toggleTheme" class="small">🌞 / 🌙</button>
+        <button id="logoutBtn" class="small">Cerrar sesión</button>
+      </div>
+    </header>
+
+    <main>
+      <section>
+        <div id="results" class="list"></div>
+        <div id="empty" class="empty" style="display:none">No hay negocios que coincidan.</div>
+      </section>
+
+      <aside class="aside">
+        <h3>Agregar negocio</h3>
+        <form id="form" class="row">
+          <label>Nombre</label>
+          <input id="f_name" required />
+          <label>Categoría</label>
+          <select id="f_cat">
+            <option>Restaurante</option>
+            <option>Tienda</option>
+            <option>Servicios</option>
+            <option>Salud</option>
+            <option>Belleza</option>
+          </select>
+          <label>Barrio / Sector</label>
+          <input id="f_neigh" />
+          <label>Teléfono</label>
+          <input id="f_phone" />
+          <label>WhatsApp</label>
+          <input id="f_wh" />
+          <label>Sitio web</label>
+          <input id="f_web" />
+          <label>Descripción</label>
+          <textarea id="f_desc" rows="3"></textarea>
+          <button type="submit" class="primary small">Guardar</button>
+        </form>
+      </aside>
+    </main>
+
+    <footer>© 2025 JamuWeb — Conectamos Jamundí con su gente 💛</footer>
+  </div>
+
+  <script>
+    // ✅ Verificación de sesión
+    const user = localStorage.getItem("user");
+    if (!user) {
+      alert("Debes iniciar sesión para acceder a JamuWeb.");
+      window.location.href = "login.html";
+    }
+
+    // ✅ Cerrar sesión
+    document.getElementById("logoutBtn").addEventListener("click", () => {
+      localStorage.removeItem("user");
+      localStorage.removeItem("pass");
+      alert("Sesión cerrada correctamente 💛");
+      window.location.href = "login.html";
+    });
+
+    // ✅ Datos iniciales
+    const SAMPLE = [
+      {id:1,name:'Panadería La 20',cat:'Tienda',neigh:'Centro',phone:'+57 312 123 4567',wh:'573121234567',web:'',desc:'Panadería tradicional — abre desde las 5am',created:Date.now()}
+    ];
+    const $ = id => document.getElementById(id);
+    let data = JSON.parse(localStorage.getItem('jamuweb')||'null') || SAMPLE.slice();
+    const save = () => localStorage.setItem('jamuweb', JSON.stringify(data));
+
+    // ✅ Render de negocios
+    function render(){
+      const q=$('q').value.toLowerCase();
+      const c=$('cat').value;
+      const n=$('neigh').value;
+      const cont=$('results');
+      cont.innerHTML='';
+      const f=data.filter(i=>{
+        if(c&&i.cat!==c)return false;
+        if(n&&i.neigh!==n)return false;
+        if(q&&!i.name.toLowerCase().includes(q))return false;
+        return true;
+      });
+      $('empty').style.display=f.length?'none':'block';
+      f.forEach(it=>{
+        const el=document.createElement('div');
+        el.className='card';
+        el.innerHTML=`
+          <div class='thumb'>${it.name.split(' ').map(s=>s[0]).join('').slice(0,2)}</div>
+          <div class='info'>
+            <h4 class='name'>${it.name}</h4>
+            <div class='meta'>${it.cat} • ${it.neigh}</div>
+            <div>${it.desc||''}</div>
+            <div class='actions'>
+              <a href='tel:${it.phone}'>Llamar</a>
+              <a class='wh' href='https://wa.me/${it.wh}' target='_blank'>WhatsApp</a>
+            </div>
+          </div>`;
+        cont.appendChild(el);
+      });
+    }
+
+    render();
+    ['q','cat','neigh'].forEach(id=>$(id).addEventListener('input',render));
+
+    $('form').addEventListener('submit',e=>{
+      e.preventDefault();
+      const o={
+        id:Date.now(),
+        name:$('f_name').value,
+        cat:$('f_cat').value,
+        neigh:$('f_neigh').value,
+        phone:$('f_phone').value,
+        wh:$('f_wh').value,
+        web:$('f_web').value,
+        desc:$('f_desc').value
+      };
+      data.push(o);
+      save();
+      render();
+      e.target.reset();
+    });
+
+    // ✅ Modo oscuro / claro persistente
+    const themeBtn = $('toggleTheme');
+    themeBtn.addEventListener('click',()=>{
+      const b=document.body;
+      const cur=b.getAttribute('data-theme');
+      const next = cur==='light'?'dark':'light';
+      b.setAttribute('data-theme',next);
+      localStorage.setItem('theme', next);
+    });
+    const savedTheme = localStorage.getItem('theme');
+    if (savedTheme) document.body.setAttribute('data-theme', savedTheme);
+  </script>
+</body>
+</html>
