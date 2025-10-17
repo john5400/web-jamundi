@@ -3,7 +3,6 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
   <title>Ingreso a JamuWeb</title>
   
   <style>
@@ -12,14 +11,17 @@
       --card: #FFF3B0;
       --text: #3E2723;
       --accent: #FFB300;
+      --error: #D32F2F;
+      --success: #388E3C;
       --shadow-light: 10px 10px 20px #d6c26b, -10px -10px 20px #fffdd2;
+      --shadow-inset: inset 4px 4px 8px rgba(0,0,0,0.1), inset -4px -4px 8px rgba(255,255,255,0.3);
     }
    
-.logo {
-  width: 120px;
-  margin-bottom: 20px;
-  filter: drop-shadow(4px 4px 6px rgba(0,0,0,0.15));
-}
+    .logo {
+      width: 120px;
+      margin-bottom: 20px;
+      filter: drop-shadow(4px 4px 6px rgba(0,0,0,0.15));
+    }
 
     body {
       font-family: 'Poppins', sans-serif;
@@ -28,17 +30,20 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      height: 100vh;
+      min-height: 100vh;
       margin: 0;
+      padding: 20px;
     }
 
     .login-box {
       background: var(--card);
-      padding: 40px;
+      padding: 40px 30px;
       border-radius: 20px;
       box-shadow: var(--shadow-light);
       text-align: center;
-      width: 320px;
+      width: 100%;
+      max-width: 320px;
+      transition: all 0.3s ease;
     }
 
     h2 {
@@ -46,17 +51,46 @@
       color: var(--text);
     }
 
+    .input-group {
+      margin-bottom: 15px;
+      text-align: left;
+    }
+
     input {
       width: 100%;
       padding: 12px;
-      margin: 10px 0;
+      margin: 5px 0;
       border: none;
       border-radius: 12px;
       background: #fff9d1;
-      box-shadow: inset 4px 4px 8px rgba(0,0,0,0.1), inset -4px -4px 8px rgba(255,255,255,0.3);
+      box-shadow: var(--shadow-inset);
       color: var(--text);
       font-size: 15px;
       outline: none;
+      transition: all 0.3s;
+      box-sizing: border-box;
+    }
+
+    input:focus {
+      box-shadow: inset 4px 4px 8px rgba(0,0,0,0.1), inset -4px -4px 8px rgba(255,255,255,0.3), 0 0 0 2px var(--accent);
+    }
+
+    input.error {
+      box-shadow: inset 4px 4px 8px rgba(0,0,0,0.1), inset -4px -4px 8px rgba(255,255,255,0.3), 0 0 0 2px var(--error);
+    }
+
+    .error-message {
+      color: var(--error);
+      font-size: 12px;
+      margin-top: 5px;
+      display: none;
+    }
+
+    .success-message {
+      color: var(--success);
+      font-size: 14px;
+      margin-top: 10px;
+      display: none;
     }
 
     button {
@@ -70,11 +104,22 @@
       font-weight: 600;
       cursor: pointer;
       box-shadow: var(--shadow-light);
-      transition: transform .3s;
+      transition: transform .3s, box-shadow .3s;
     }
 
     button:hover {
       transform: scale(1.03);
+      box-shadow: 8px 8px 16px #d6c26b, -8px -8px 16px #fffdd2;
+    }
+
+    button:active {
+      transform: scale(0.98);
+    }
+
+    button:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      transform: none;
     }
 
     p {
@@ -86,18 +131,74 @@
       color: var(--accent);
       cursor: pointer;
       font-weight: 600;
+      transition: color 0.3s;
     }
-    
+
+    .link:hover {
+      color: #FF8F00;
+      text-decoration: underline;
+    }
+
+    .password-container {
+      position: relative;
+    }
+
+    .toggle-password {
+      position: absolute;
+      right: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: var(--text);
+      width: auto;
+      box-shadow: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .toggle-password:hover {
+      transform: translateY(-50%) scale(1.1);
+    }
+
+    @media (max-width: 480px) {
+      .login-box {
+        padding: 30px 20px;
+      }
+    }
   </style>
 </head>
 <body>
   <div class="login-box">
-    <!-- 🔸 Logo JamuWeb -->
+    <!-- Logo JamuWeb -->
     <img src="jamuweb.png" alt="JamuWeb Logo" class="logo">
 
     <h2 id="title">Iniciar Sesión</h2>
-    <input type="text" id="username" placeholder="Usuario">
-    <input type="password" id="password" placeholder="Contraseña">
+    
+    <div class="input-group">
+      <input type="text" id="username" placeholder="Usuario" autocomplete="username">
+      <div class="error-message" id="username-error">Por favor ingresa un nombre de usuario válido</div>
+    </div>
+    
+    <div class="input-group">
+      <div class="password-container">
+        <input type="password" id="password" placeholder="Contraseña" autocomplete="current-password">
+        <button type="button" class="toggle-password" id="togglePassword">👁️</button>
+      </div>
+      <div class="error-message" id="password-error">La contraseña debe tener al menos 6 caracteres</div>
+    </div>
+    
+    <div class="input-group" id="confirmPasswordGroup" style="display: none;">
+      <div class="password-container">
+        <input type="password" id="confirmPassword" placeholder="Confirmar contraseña" autocomplete="new-password">
+        <button type="button" class="toggle-password" id="toggleConfirmPassword">👁️</button>
+      </div>
+      <div class="error-message" id="confirmPassword-error">Las contraseñas no coinciden</div>
+    </div>
+    
+    <div class="success-message" id="successMessage"></div>
+    
     <button id="actionBtn">Ingresar</button>
     <p id="toggleText">¿No tienes cuenta? <span class="link" id="toggleMode">Regístrate</span></p>
   </div>
@@ -105,58 +206,185 @@
   <script>
     const username = document.getElementById("username");
     const password = document.getElementById("password");
+    const confirmPassword = document.getElementById("confirmPassword");
+    const confirmPasswordGroup = document.getElementById("confirmPasswordGroup");
     const actionBtn = document.getElementById("actionBtn");
     const title = document.getElementById("title");
     const toggleMode = document.getElementById("toggleMode");
     const toggleText = document.getElementById("toggleText");
+    const togglePassword = document.getElementById("togglePassword");
+    const toggleConfirmPassword = document.getElementById("toggleConfirmPassword");
+    const usernameError = document.getElementById("username-error");
+    const passwordError = document.getElementById("password-error");
+    const confirmPasswordError = document.getElementById("confirmPassword-error");
+    const successMessage = document.getElementById("successMessage");
 
     let isLogin = true;
 
+    // Función para mostrar/ocultar contraseña
+    function togglePasswordVisibility(inputElement, toggleButton) {
+      const type = inputElement.getAttribute('type') === 'password' ? 'text' : 'password';
+      inputElement.setAttribute('type', type);
+      toggleButton.textContent = type === 'password' ? '👁️' : '🙈';
+    }
+
+    // Función para validar campos
+    function validateFields() {
+      let isValid = true;
+      
+      // Limpiar errores previos
+      usernameError.style.display = 'none';
+      passwordError.style.display = 'none';
+      confirmPasswordError.style.display = 'none';
+      username.classList.remove('error');
+      password.classList.remove('error');
+      confirmPassword.classList.remove('error');
+      
+      // Validar usuario
+      if (!username.value.trim()) {
+        usernameError.style.display = 'block';
+        username.classList.add('error');
+        isValid = false;
+      }
+      
+      // Validar contraseña
+      if (!password.value.trim()) {
+        passwordError.style.display = 'block';
+        password.classList.add('error');
+        isValid = false;
+      } else if (!isLogin && password.value.length < 6) {
+        passwordError.textContent = 'La contraseña debe tener al menos 6 caracteres';
+        passwordError.style.display = 'block';
+        password.classList.add('error');
+        isValid = false;
+      }
+      
+      // Validar confirmación de contraseña en modo registro
+      if (!isLogin && password.value !== confirmPassword.value) {
+        confirmPasswordError.style.display = 'block';
+        confirmPassword.classList.add('error');
+        isValid = false;
+      }
+      
+      return isValid;
+    }
+
+    // Función para cambiar entre login y registro
     function switchMode() {
       isLogin = !isLogin;
+      
+      // Limpiar campos y mensajes
+      username.value = '';
+      password.value = '';
+      confirmPassword.value = '';
+      usernameError.style.display = 'none';
+      passwordError.style.display = 'none';
+      confirmPasswordError.style.display = 'none';
+      successMessage.style.display = 'none';
+      username.classList.remove('error');
+      password.classList.remove('error');
+      confirmPassword.classList.remove('error');
+      
       if (isLogin) {
         title.textContent = "Iniciar Sesión";
         actionBtn.textContent = "Ingresar";
+        confirmPasswordGroup.style.display = 'none';
         toggleText.innerHTML = '¿No tienes cuenta? <span class="link" id="toggleMode">Regístrate</span>';
       } else {
         title.textContent = "Crear Cuenta";
         actionBtn.textContent = "Registrar";
+        confirmPasswordGroup.style.display = 'block';
         toggleText.innerHTML = '¿Ya tienes cuenta? <span class="link" id="toggleMode">Inicia sesión</span>';
       }
+      
+      // Reasignar el evento después de cambiar el HTML
       document.getElementById("toggleMode").addEventListener("click", switchMode);
     }
 
-    toggleMode.addEventListener("click", switchMode);
-
-    actionBtn.addEventListener("click", () => {
-      const user = username.value.trim();
-      const pass = password.value.trim();
-      if (!user || !pass) {
-        alert("Por favor completa todos los campos.");
+    // Función para manejar el proceso de login/registro
+    function handleAuth() {
+      if (!validateFields()) {
         return;
       }
 
+      const user = username.value.trim();
+      const pass = password.value.trim();
+
       if (isLogin) {
-        const storedUser = localStorage.getItem("user");
-        const storedPass = localStorage.getItem("pass");
+        // Login
+        const storedUser = localStorage.getItem("jamuweb_user");
+        const storedPass = localStorage.getItem("jamuweb_pass");
+        
         if (user === storedUser && pass === storedPass) {
-          alert("Bienvenido a JamuWeb 💛");
-          window.location.href = "jamuweb.html";
+          successMessage.textContent = "Bienvenido a JamuWeb 💛";
+          successMessage.style.display = 'block';
+          setTimeout(() => {
+            window.location.href = "jamuweb.html";
+          }, 1000);
         } else {
-          alert("Usuario o contraseña incorrectos.");
+          passwordError.textContent = "Usuario o contraseña incorrectos";
+          passwordError.style.display = 'block';
+          password.classList.add('error');
         }
       } else {
-        localStorage.setItem("user", user);
-        localStorage.setItem("pass", pass);
-        alert("Usuario registrado correctamente 💫");
-        isLogin = true;
-        title.textContent = "Iniciar Sesión";
-        actionBtn.textContent = "Ingresar";
-        toggleText.innerHTML = '¿No tienes cuenta? <span class="link" id="toggleMode">Regístrate</span>';
-        document.getElementById("toggleMode").addEventListener("click", switchMode);
+        // Registro
+        localStorage.setItem("jamuweb_user", user);
+        localStorage.setItem("jamuweb_pass", pass);
+        
+        successMessage.textContent = "Usuario registrado correctamente 💫";
+        successMessage.style.display = 'block';
+        
+        // Cambiar automáticamente a modo login después de registro exitoso
+        setTimeout(() => {
+          isLogin = true;
+          title.textContent = "Iniciar Sesión";
+          actionBtn.textContent = "Ingresar";
+          confirmPasswordGroup.style.display = 'none';
+          toggleText.innerHTML = '¿No tienes cuenta? <span class="link" id="toggleMode">Regístrate</span>';
+          document.getElementById("toggleMode").addEventListener("click", switchMode);
+          successMessage.style.display = 'none';
+        }, 2000);
+      }
+    }
+
+    // Event Listeners
+    toggleMode.addEventListener("click", switchMode);
+    
+    actionBtn.addEventListener("click", handleAuth);
+    
+    togglePassword.addEventListener("click", () => {
+      togglePasswordVisibility(password, togglePassword);
+    });
+    
+    if (toggleConfirmPassword) {
+      toggleConfirmPassword.addEventListener("click", () => {
+        togglePasswordVisibility(confirmPassword, toggleConfirmPassword);
+      });
+    }
+    
+    // Permitir enviar con Enter
+    [username, password, confirmPassword].forEach(input => {
+      if (input) {
+        input.addEventListener("keypress", (e) => {
+          if (e.key === "Enter") {
+            handleAuth();
+          }
+        });
       }
     });
+    
+    // Validación en tiempo real para la confirmación de contraseña
+    if (confirmPassword) {
+      confirmPassword.addEventListener("input", () => {
+        if (!isLogin && password.value !== confirmPassword.value) {
+          confirmPasswordError.style.display = 'block';
+          confirmPassword.classList.add('error');
+        } else {
+          confirmPasswordError.style.display = 'none';
+          confirmPassword.classList.remove('error');
+        }
+      });
+    }
   </script>
 </body>
-
 </html>
